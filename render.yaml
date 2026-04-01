@@ -22,7 +22,6 @@ services:
   - type: web
     name: skillnest-frontend
     runtime: static
-    region: ohio
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
