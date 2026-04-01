@@ -1,0 +1,45 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: skillnest-backend
+    env: node
+    plan: free
+    region: ohio
+    rootDirectory: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: 10000
+
+  # Frontend Static Site
+  - type: static
+    name: skillnest-frontend
+    env: static
+    plan: free
+    region: ohio
+    rootDirectory: frontend
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    headers:
+      - path: /*
+        headers:
+          - key: Cache-Control
+            value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: skillnest-backend
+          property: host
+        value: ${skillnest-backend.host}/api
