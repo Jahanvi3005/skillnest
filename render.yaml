@@ -23,7 +23,6 @@ services:
     name: skillnest-frontend
     runtime: static
     plan: free
-    region: ohio
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
@@ -37,8 +36,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_BASE_URL
-        fromService:
-          type: web
-          name: skillnest-backend
-          property: host
         value: ${skillnest-backend.host}/api
