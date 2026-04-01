@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+    const rawURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+    // If it's the onrender URL from fromService, append /api
+    if (rawURL.includes('.onrender.com') && !rawURL.endsWith('/api')) {
+        return `${rawURL.replace(/\/$/, '')}/api`;
+    }
+    return rawURL;
+};
+
 const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+    baseURL: getBaseURL(),
 });
 
 // Add a request interceptor to add the auth token to headers

@@ -35,4 +35,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_BASE_URL
-        value: https://${skillnest-backend.host}/api
+        fromService:
+          type: web
+          name: skillnest-backend
+          envVarKey: RENDER_EXTERNAL_URL

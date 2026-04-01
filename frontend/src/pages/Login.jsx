@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -95,9 +96,13 @@ const Login = () => {
                             </label>
                         </div>
                         <div className="text-sm">
-                            <Link to="#" className="font-medium text-primary hover:text-primary-dark">
+                            <button 
+                                type="button"
+                                onClick={() => toast.error('Password reset is coming soon! Please contact support.')}
+                                className="font-medium text-primary hover:text-primary-dark"
+                            >
                                 Forgot password?
-                            </Link>
+                            </button>
                         </div>
                     </div>
 
