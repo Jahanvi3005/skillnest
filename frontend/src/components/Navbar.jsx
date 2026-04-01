@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, LayoutDashboard, Menu, X, ArrowRight } from 'lucide-react';
+import { LogOut, LayoutDashboard, Menu, X, ArrowRight, BookOpen, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -23,9 +23,9 @@ const Navbar = () => {
     };
 
     const navLinks = [
-        { name: 'Courses', path: '/courses' },
+        { name: 'Courses', path: '/courses', icon: BookOpen },
         ...(user ? [{ name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard }] : []),
-        ...(isAdmin() ? [{ name: 'Admin', path: '/admin' }] : []),
+        ...(isAdmin() ? [{ name: 'Admin', path: '/admin', icon: Shield }] : []),
     ];
 
     return (
@@ -36,28 +36,31 @@ const Navbar = () => {
                 </Link>
 
                 <div className="hidden md:flex items-center space-x-1">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.path}
-                            to={link.path}
-                            className={`px-5 py-2 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 relative group ${
-                                location.pathname === link.path 
-                                ? 'text-primary' 
-                                : 'text-slate-500 hover:text-slate-900'
-                            }`}
-                        >
-                            {link.icon && <link.icon className="h-4 w-4" />}
-                            <span>{link.name}</span>
-                            {location.pathname === link.path && (
-                                <motion.div 
-                                    layoutId="nav-pill"
-                                    className="absolute inset-0 bg-primary/5 rounded-xl z-[-1]"
-                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                />
-                            )}
-                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-2/3" />
-                        </Link>
-                    ))}
+                    {navLinks.map((link) => {
+                        const Icon = link.icon;
+                        return (
+                            <Link
+                                key={link.path}
+                                to={link.path}
+                                className={`px-5 py-2 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 relative group ${
+                                    location.pathname === link.path 
+                                    ? 'text-primary' 
+                                    : 'text-slate-500 hover:text-slate-900'
+                                }`}
+                            >
+                                {Icon && <Icon className="h-4 w-4" />}
+                                <span>{link.name}</span>
+                                {location.pathname === link.path && (
+                                    <motion.div 
+                                        layoutId="nav-pill"
+                                        className="absolute inset-0 bg-primary/5 rounded-xl z-[-1]"
+                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                    />
+                                )}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-2/3" />
+                            </Link>
+                        );
+                    })}
 
                     {user ? (
                         <div className="flex items-center space-x-4 ml-6 pl-6 border-l border-slate-100">
@@ -105,17 +108,20 @@ const Navbar = () => {
                         exit={{ opacity: 0, y: -20, scale: 0.95 }}
                         className="md:hidden mt-4 pt-4 border-t border-slate-100 space-y-2"
                     >
-                        {navLinks.map((link) => (
-                            <Link 
-                                key={link.path}
-                                to={link.path} 
-                                onClick={() => setIsOpen(false)} 
-                                className="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-primary/5 hover:text-primary transition-all"
-                            >
-                                {link.icon && <link.icon className="h-5 w-5" />}
-                                <span>{link.name}</span>
-                            </Link>
-                        ))}
+                        {navLinks.map((link) => {
+                            const Icon = link.icon;
+                            return (
+                                <Link 
+                                    key={link.path}
+                                    to={link.path} 
+                                    onClick={() => setIsOpen(false)} 
+                                    className="flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-primary/5 hover:text-primary transition-all"
+                                >
+                                    {Icon && <Icon className="h-5 w-5" />}
+                                    <span>{link.name}</span>
+                                </Link>
+                            );
+                        })}
                         {!user && (
                             <Link 
                                 to="/register" 
